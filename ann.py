@@ -4,7 +4,7 @@
 # Installing Tensorflow (numerical computations)
 # Installing Keras (wraps Theano and Tensorflow -> few lines of code) 
 
-# Step 1 - Data Preprocessing
+# Part 1 - Data Preprocessing
 
 # Importing the libraries
 import numpy as np # most of mathematics and to work with arrays
@@ -37,7 +37,7 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-# Step 2 - Make the ANN
+# Part 2 - Make the ANN
 
 # Importing the Keras libraries and packages
 import keras
@@ -71,7 +71,7 @@ classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = [
 # No rule of thumb for batch_size and epochs
 classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
 
-# Step 3 - Making the predictions and evaluating the model
+# Part 3 - Making the predictions and evaluating the model
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test) # vector that gives prediction of each test set observation
@@ -97,7 +97,7 @@ new_prediction = (new_prediction > 0.5)
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
 
-# Step 4 - Evaluating, Improving, and Tuning the ANN
+# Part 4 - Evaluating, Improving, and Tuning the ANN
 
 # Evaluating the ANN (bias and variance)
 from keras.wrappers.scikit_learn import KerasClassifier # wrapper for k-fold into keras model
