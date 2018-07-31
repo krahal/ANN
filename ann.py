@@ -37,6 +37,7 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
+
 # Part 2 - Make the ANN
 
 # Importing the Keras libraries and packages
@@ -71,6 +72,7 @@ classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = [
 # No rule of thumb for batch_size and epochs
 classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
 
+
 # Part 3 - Making the predictions and evaluating the model
 
 # Predicting the Test set results
@@ -96,6 +98,19 @@ new_prediction = (new_prediction > 0.5)
 # Making the Confusion Matrix (evaluate our model)
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
+
+# Calculating Model Accuracy
+from sklearn.metrics import accuracy_score
+acs = accuracy_score(y_test, y_pred)
+print("\nAccuracy Score: %.2f%%" % (acs * 100))
+
+# Save the model
+classifier.save('models/bankChurnPrediction1.h5')
+
+# Save the scaler
+import pickle
+scalerfile = 'scaler.sav'
+pickle.dump(sc, open(scalerfile, 'wb'))
 
 # Part 4 - Evaluating, Improving, and Tuning the ANN
 
