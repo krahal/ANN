@@ -10,6 +10,7 @@ def init():
     global classifier, sc, graph
     # load the pre-trained Keras model
     classifier = load_model('models/bankChurnPrediction1.h5')
+    # load the fitted StandardScaler
     scalerfile = 'scaler.sav'
     sc = pickle.load(open(scalerfile, 'rb'))
     graph = tf.get_default_graph()
