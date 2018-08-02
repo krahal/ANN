@@ -1,11 +1,11 @@
-import flask
+from flask import Flask, render_template, request, jsonify
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
 import pickle
 
 # initialize our Flask application and the Keras model
-app = flask.Flask(__name__)
+app = Flask(__name__, static_folder="./static/dist", template_folder="./templates")
 def init():
     global classifier, sc, graph
     # load the pre-trained Keras model
@@ -31,27 +31,32 @@ Estimated Salary: 50000"""
 # Getting Parameters
 def getParameters():
     parameters = []
-    parameters.append(flask.request.args.get('p1'))
-    parameters.append(flask.request.args.get('p2'))
-    parameters.append(flask.request.args.get('p3'))
-    parameters.append(flask.request.args.get('p4'))
-    parameters.append(flask.request.args.get('p5'))
-    parameters.append(flask.request.args.get('p6'))
-    parameters.append(flask.request.args.get('p7'))
-    parameters.append(flask.request.args.get('p8'))
-    parameters.append(flask.request.args.get('p9'))
-    parameters.append(flask.request.args.get('p10'))
-    parameters.append(flask.request.args.get('p11'))
+    parameters.append(request.args.get('p1'))
+    parameters.append(request.args.get('p2'))
+    parameters.append(request.args.get('p3'))
+    parameters.append(request.args.get('p4'))
+    parameters.append(request.args.get('p5'))
+    parameters.append(request.args.get('p6'))
+    parameters.append(request.args.get('p7'))
+    parameters.append(request.args.get('p8'))
+    parameters.append(request.args.get('p9'))
+    parameters.append(request.args.get('p10'))
+    parameters.append(request.args.get('p11'))
     return parameters
     
 # Cross origin support
 def sendResponse(responseObj):
-    response = flask.jsonify(responseObj)
+    response = jsonify(responseObj)
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Methods', 'GET')
     response.headers.add('Access-Control-Allow-Headers', 'accept,content-type,Origin,X-Requested-With,Content-Type,access_token,Accept,Authorization,source')
     response.headers.add('Access-Control-Allow-Credentials', True)
     return response
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 
 # API for the prediction
 @app.route("/predict", methods=["GET"])
@@ -64,11 +69,14 @@ def predict():
         prediction = 'false'
     else:
         prediction = 'true'
-    return sendResponse({'churnOrNot': prediction})
+    param1 = request.args.get('p1')
+    return jsonify({
+                        'churnOrNot': prediction,
+                        'parameter 1': param1
+                    })
 
 # if this is the main thread of execution first load the model and then start the server
 if __name__ == "__main__":
-    print(("* Loading Keras model and Flask starting server..."
-"please wait until server has fully started"))
+    print(("* Loading Keras model and Flask starting server... please wait until server has fully started"))
     init()
     app.run(threaded=True)
