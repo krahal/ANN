@@ -53,10 +53,10 @@ def sendResponse(responseObj):
     response.headers.add('Access-Control-Allow-Credentials', True)
     return response
 
+# Homepage
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 # API for the prediction
 @app.route("/predict", methods=["GET"])
@@ -70,10 +70,7 @@ def predict():
     else:
         prediction = 'true'
     param1 = request.args.get('p1')
-    return jsonify({
-                        'churnOrNot': prediction,
-                        'parameter 1': param1
-                    })
+    return render_template('predict.html', prediction=prediction, param1=param1)
 
 # if this is the main thread of execution first load the model and then start the server
 if __name__ == "__main__":
